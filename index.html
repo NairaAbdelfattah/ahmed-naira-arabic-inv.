@@ -80,6 +80,31 @@ body{font-family:'diwanltr','Amiri',Tahoma,Arial,serif;direction:rtl}
 .value,.venue-name,.hall-name,.countdown-title,h2,.lead,.venue-copy{font-family:'diwanltr','Amiri',Tahoma,Arial,serif}
 .footer .names{font-family:'diwanltr','Amiri',Tahoma,Arial,serif;font-style:normal}
 
+
+/* Public guestbook — matching the invitation palette */
+.guestbook-section{padding:42px 18px 58px;background:#f8f2e9;color:#765d49;text-align:center;direction:rtl}
+.guestbook-card{width:min(100%,760px);margin:0 auto;padding:34px clamp(18px,5vw,42px);border-radius:30px;background:#f8f1e8;box-shadow:0 10px 34px #66513a12}
+.guestbook-title{font-size:clamp(30px,6vw,44px);font-weight:600;color:#795f4b;margin:0 0 14px}
+.guestbook-intro{font-size:clamp(17px,3.6vw,25px);line-height:1.8;color:#9a806a;margin:0 auto 26px;max-width:620px}
+.guestbook-form{text-align:right;max-width:100%;margin:0 auto}
+.guestbook-form label{display:block;font-size:21px;color:#80634d;margin:15px 4px 8px}
+.guestbook-form input,.guestbook-form textarea{display:block;width:100%;border:0;outline:0;border-radius:17px;background:#fff;color:#5a4b3d;padding:19px 20px;font:20px/1.7 'diwanltr','Amiri',Tahoma,Arial,sans-serif;box-shadow:0 1px 2px #5a4b3d08}
+.guestbook-form input{height:78px}
+.guestbook-form textarea{height:175px;resize:vertical;min-height:130px}
+.guestbook-form input::placeholder,.guestbook-form textarea::placeholder{color:#b7aaa0;opacity:1}
+.guestbook-submit{width:100%;margin-top:22px;padding:19px 16px;border:0;border-radius:17px;background:#aa8b68;color:#fff;font:23px 'diwanltr','Amiri',Tahoma,Arial,sans-serif;cursor:pointer;transition:background .2s,transform .2s}
+.guestbook-submit:hover{background:#927453;transform:translateY(-1px)}
+.guestbook-submit:disabled{opacity:.65;cursor:wait;transform:none}
+.guestbook-status{min-height:28px;margin:12px 0 0;font:15px/1.6 Tahoma,Arial,sans-serif;color:#80634d;text-align:center}
+.guestbook-divider{height:1px;background:#d9caba;margin:38px 0 30px}
+.guestbook-list-title{font-size:clamp(28px,5vw,38px);font-weight:600;color:#795f4b;margin:0 0 22px}
+.guestbook-list{display:grid;gap:13px;text-align:right}
+.guestbook-message{padding:20px 22px;background:#fff;border-radius:17px;color:#80634d;box-shadow:0 2px 8px #5a4b3d08;overflow-wrap:anywhere}
+.guestbook-message-name{font-size:18px;font-weight:700;margin-bottom:6px;color:#927453}
+.guestbook-message-text{font-size:20px;line-height:1.8;white-space:pre-wrap}
+.guestbook-empty{padding:20px;background:#fff;border-radius:17px;color:#9a806a;font-size:19px}
+@media(max-width:600px){.guestbook-section{padding:30px 12px 42px}.guestbook-card{border-radius:24px;padding:27px 16px}.guestbook-form label{font-size:19px}.guestbook-form input{height:68px}.guestbook-form input,.guestbook-form textarea{font-size:18px}.guestbook-submit{font-size:21px}}
+
 </style>
 </head>
 <body>
@@ -132,6 +157,25 @@ body{font-family:'diwanltr','Amiri',Tahoma,Arial,serif;direction:rtl}
    <a class="map-button" href="https://maps.app.goo.gl/Hffmtv1m8Q3joLhMA?g_st=ic" target="_blank" rel="noopener noreferrer">الوصول إلى موقع الحفل</a>
   </div>
  </section>
+
+<section class="guestbook-section" id="guestbook" aria-label="رسائل الأحباب">
+ <div class="guestbook-card">
+  <h2 class="guestbook-title">كلمات تبقى في القلب</h2>
+  <p class="guestbook-intro">شاركونا فرحتنا بكلماتكم وأمنياتكم الجميلة، لنحتفظ بها ذكرى لبداية حكايتنا.</p>
+  <form class="guestbook-form" id="guestbook-form">
+   <label for="guest-name">اسمك</label>
+   <input id="guest-name" name="name" type="text" maxlength="60" autocomplete="name" placeholder="اكتب اسمك هنا..." required>
+   <label for="guest-message">رسالتك للعروسين</label>
+   <textarea id="guest-message" name="message" maxlength="1000" placeholder="اكتب لنا كلمات من قلبك..." required></textarea>
+   <button class="guestbook-submit" id="guestbook-submit" type="submit">إرسال رسالتك</button>
+   <p class="guestbook-status" id="guestbook-status" role="status" aria-live="polite"></p>
+  </form>
+  <div class="guestbook-divider"></div>
+  <h3 class="guestbook-list-title">رسائل الأحباب</h3>
+  <div class="guestbook-list" id="guestbook-list" aria-live="polite"><div class="guestbook-empty">هنا ستجتمع أجمل كلماتكم وتهانيكم ❤️</div></div>
+ </div>
+</section>
+
 </main>
 <footer class="footer">
  <div class="eyebrow">بداية حكاية تجمعنا للأبد</div>
@@ -174,5 +218,81 @@ body{font-family:'diwanltr','Amiri',Tahoma,Arial,serif;direction:rtl}
   const timer = setInterval(updateCountdown, 1000);
 })();
 </script>
+
+<script>
+/* Set these two values after creating your Supabase project. Use the project URL
+   and the publishable/anon key only. NEVER put a service_role key in this page. */
+(function () {
+  const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+  const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY';
+  const tableUrl = SUPABASE_URL + '/rest/v1/wedding_messages';
+  const form = document.getElementById('guestbook-form');
+  if (!form) return;
+  const nameInput = document.getElementById('guest-name');
+  const messageInput = document.getElementById('guest-message');
+  const submitButton = document.getElementById('guestbook-submit');
+  const status = document.getElementById('guestbook-status');
+  const list = document.getElementById('guestbook-list');
+  const configured = SUPABASE_URL.startsWith('https://') &&
+    !SUPABASE_URL.includes('YOUR_SUPABASE') &&
+    !SUPABASE_ANON_KEY.includes('YOUR_SUPABASE');
+
+  function headers(extra) {
+    return Object.assign({ apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY }, extra || {});
+  }
+  function renderMessages(rows) {
+    list.replaceChildren();
+    if (!rows || rows.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'guestbook-empty';
+      empty.textContent = 'كونوا أول من يترك لنا كلمة جميلة ❤️';
+      list.appendChild(empty);
+      return;
+    }
+    rows.forEach(function (row) {
+      const card = document.createElement('article'); card.className = 'guestbook-message';
+      const name = document.createElement('div'); name.className = 'guestbook-message-name'; name.textContent = row.sender_name;
+      const message = document.createElement('div'); message.className = 'guestbook-message-text'; message.textContent = row.message;
+      card.append(name, message); list.appendChild(card);
+    });
+  }
+  async function loadMessages() {
+    if (!configured) {
+      list.innerHTML = '<div class="guestbook-empty">سيظهر سجل الرسائل هنا بعد تفعيل قاعدة البيانات.</div>';
+      return;
+    }
+    try {
+      const response = await fetch(tableUrl + '?select=id,sender_name,message,created_at&order=created_at.desc&limit=100', { headers: headers() });
+      if (!response.ok) throw new Error('load');
+      renderMessages(await response.json());
+    } catch (_) {
+      list.innerHTML = '<div class="guestbook-empty">تعذر تحميل الرسائل الآن. حاولوا تحديث الصفحة بعد قليل.</div>';
+    }
+  }
+  form.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    const sender_name = nameInput.value.trim();
+    const message = messageInput.value.trim();
+    if (!sender_name || !message) { status.textContent = 'من فضلك اكتب اسمك ورسالتك.'; return; }
+    if (!configured) { status.textContent = 'قسم الرسائل جاهز، ويتبقى ربط قاعدة البيانات لتفعيل الإرسال العام.'; return; }
+    submitButton.disabled = true; status.textContent = 'جارٍ إرسال رسالتك...';
+    try {
+      const response = await fetch(tableUrl, {
+        method: 'POST',
+        headers: headers({ 'Content-Type': 'application/json', Prefer: 'return=representation' }),
+        body: JSON.stringify({ sender_name: sender_name, message: message })
+      });
+      if (!response.ok) throw new Error('send');
+      form.reset(); status.textContent = 'وصلتنا رسالتك، شكرًا لمشاركتنا فرحتنا ❤️';
+      await loadMessages();
+    } catch (_) {
+      status.textContent = 'لم نتمكن من إرسال الرسالة. حاول مرة أخرى.';
+    } finally { submitButton.disabled = false; }
+  });
+  loadMessages();
+  if (configured) window.setInterval(loadMessages, 30000);
+})();
+</script>
+
 </body>
 </html>
